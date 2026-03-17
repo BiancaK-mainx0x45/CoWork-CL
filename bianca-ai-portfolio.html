@@ -637,8 +637,11 @@ let _starRating = 0;
     // Replace the unlock seed so browser back goes straight to hub, not unlock screen
     history.replaceState({view:'portfolio'},'');
     _applyState('portfolio');
-    var _so=document.getElementById('signout-btn');if(_so)_so.style.display='block';
-    var _hl=document.getElementById('hub-link-btn');if(_hl)_hl.style.display='block';
+    // hub-link-btn + signout-btn are after the script block — wait for full DOM
+    document.addEventListener('DOMContentLoaded', function(){
+      var _so=document.getElementById('signout-btn');if(_so)_so.style.display='block';
+      var _hl=document.getElementById('hub-link-btn');if(_hl)_hl.style.display='block';
+    });
     return;
   }
   const stored = localStorage.getItem('_pub_auth');
