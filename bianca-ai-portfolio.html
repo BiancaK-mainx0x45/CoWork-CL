@@ -636,9 +636,12 @@ let _starRating = 0;
     localStorage.setItem('_pub_auth', hubAuth === OHASH ? OHASH : HASH); // sync _pub_auth
     // Replace the unlock seed so browser back goes straight to hub, not unlock screen
     history.replaceState({view:'portfolio'},'');
-    _applyState('portfolio');
-    // hub-link-btn + signout-btn are after the script block — wait for full DOM
+    // CRITICAL: const data arrays (APPS, PROOF_ITEMS, DOCS, SKILLS, MATCH_SKILLS) are
+    // declared AFTER this IIFE in the script block — const is NOT hoisted so calling
+    // renderPortfolio() here causes ReferenceError and nothing renders.
+    // DOMContentLoaded fires after the full script has executed — all consts initialized.
     document.addEventListener('DOMContentLoaded', function(){
+      _applyState('portfolio');
       var _so=document.getElementById('signout-btn');if(_so)_so.style.display='block';
       var _hl=document.getElementById('hub-link-btn');if(_hl)_hl.style.display='block';
     });
